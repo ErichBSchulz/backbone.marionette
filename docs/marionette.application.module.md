@@ -1,12 +1,10 @@
 # Marionette.Application.module
 
-Marionette allows you to define a module within your application,
-including sub-modules hanging from that module. This is useful for creating 
-modular, encapsulated applications that are split apart in to multiple 
-files.
+Marionette modules support creating modular, encapsulated applications that 
+are split into multiple files.
 
-Marionette's modules allow you to have unlimited sub-modules hanging off of
-your application, and serve as an event aggregator in themselves.
+Marionette's modules allow you to have unlimited, nested sub-modules in
+your application, and serve as self-contained event aggregators.
 
 ## Documentation Index
 
@@ -55,10 +53,10 @@ module that you need in your tests.
 
 ### Starting Modules
 
-Starting a module is done in one of two ways:
+Starting a module is done:
 
-1. Automatically with the parent module (or Application) `.start()` method
-2. Manually call the `.start()` method on the module
+1. automatically with the parent module (or Application) `.start()` method, or
+2. manually by calling the module's `.start()` method
 
 In this example, the module will be started automatically with the parent
 application object's `start` call:
@@ -75,14 +73,13 @@ MyApp.module("Foo", function(){
 MyApp.start();
 ```
 
-Note that modules loaded and defined after the `app.start()` call will still
-be started automatically.
+Even modules loaded and defined after the `app.start()` call are still
+automatically started.
 
 ### Start Events
 
-When starting a module, a "before:start" event will be triggered prior
-to any of the initializers being run. A "start" event will then be 
-triggered after they have been run.
+When starting a module, a "before:start" event is triggered prior
+to any of the initializers running. A "start" event then occurs.
 
 ```js
 var mod = MyApp.module("MyMod");
@@ -98,7 +95,8 @@ mod.on("start", function(){
 
 #### Passing Data to Start Events
 
-`.start` takes a single `options` parameter that will be passed to start events and their equivalent methods (`onStart` and `onBeforeStart`.) 
+`.start` takes a single `options` parameter that is passed to start events
+and their equivalent methods (`onStart` and `onBeforeStart`.) 
 
 ```js
 var mod = MyApp.module("MyMod");
@@ -120,7 +118,7 @@ mod.start(options);
 ### Preventing Auto-Start Of Modules
 
 If you wish to manually start a module instead of having the application
-start it, you can tell the module definition not to start with the parent:
+start it, set the `startWithParent` property false in the definition:
 
 ```js
 var fooModule = MyApp.module("Foo", function(){
@@ -157,7 +155,7 @@ MyApp.module("Foo").start();
 
 #### Specifying `startWithParent: false` setting as an object literal
 
-There is a second way of specifying `startWithParent` in a `.module`
+Alternatively you can set `startWithParent` in the `.module`
 call, using an object literal:
 
 ```js
@@ -213,10 +211,10 @@ MyApp.module("Foo.Bar", function(){
 MyApp.start(); 
 ```
 
-Now the module "Foo" will be started, but the sub-module "Foo.Bar" will
-not be started.
+Now the module "Foo" will start, but the sub-module "Foo.Bar" will
+not.
 
-A sub-module can still be started manually, with this configuration:
+You can start a sub-module manually, with:
 
 ```js
 MyApp.module("Foo.Bar").start();
@@ -229,7 +227,7 @@ the module is no longer needed. Like starting of modules, stopping is done
 in a depth-first hierarchy traversal. That is, a hierarchy of modules like
 `Foo.Bar.Baz` will stop `Baz` first, then `Bar`, and finally `Foo`.
 
-To stop a module and it's children, call the `stop()` method of a module.
+To stop a module and its children, call its `stop()` method:
 
 ```js
 MyApp.module("Foo").stop();
